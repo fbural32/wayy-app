@@ -15,6 +15,7 @@ import AuthScreen from './src/screens/AuthScreen';
 import AgreementScreen from './src/screens/AgreementScreen';
 import LanguageScreen from './src/screens/LanguageScreen';
 import OrganizerScreen from './src/screens/OrganizerScreen';
+import ProScreen from './src/screens/ProScreen';
 import { COLORS } from './src/config/theme';
 import { requestNotificationPermission, startBackgroundLocationTracking } from './src/utils/notificationService';
 
@@ -77,6 +78,11 @@ function AppContent() {
         <Stack.Screen
           name="Organizer"
           component={OrganizerScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Pro"
+          component={ProScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

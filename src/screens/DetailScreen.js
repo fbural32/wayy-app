@@ -7,6 +7,8 @@ import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
 import { useUserLocation } from '../context/LocationContext';
 import RatingStars from '../components/RatingStars';
+import { getPexelsPhoto } from '../utils/pexelsService';
+import { getWikiPhoto } from '../utils/wikiPhotoService';
 import { CATEGORIES, COLORS, BADGES } from '../config/theme';
 import { getDistanceKm, estimateMinutes, formatDistance, formatDuration, containsBadWord } from '../utils/distance';
 
@@ -16,6 +18,7 @@ export default function DetailScreen({ route, navigation }) {
   const { user, profile, refreshProfile } = useAuth();
   const cat = CATEGORIES[place.category];
 
+  const [coverImage, setCoverImage] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
@@ -32,6 +35,16 @@ export default function DetailScreen({ route, navigation }) {
   useEffect(() => {
     loadReviews();
     checkFavorite();
+    // Önce Wikipedia'dan yere özel fotoğraf dene
+    getWikiPhoto(place.name, place.city).then(wikiUrl => {
+      if (wikiUrl) {
+        setCoverImage(wikiUrl);
+      } else {
+        getPexelsPhoto(place.category, place.name).then(url => {
+          if (url) setCoverImage(url);
+        });
+      }
+    });
   }, []);
 
   async function loadReviews() {
@@ -149,8 +162,8 @@ export default function DetailScreen({ route, navigation }) {
   return (
     <ScrollView style={styles.container}>
       {/* Kapak fotoğrafı */}
-      {place.image ? (
-        <Image source={{ uri: place.image }} style={styles.coverImage} resizeMode="cover" />
+      {coverImage ? (
+        <Image source={{ uri: coverImage }} style={styles.coverImage} resizeMode="cover" />
       ) : (
         <View style={[styles.coverPlaceholder, { backgroundColor: cat.color + '30' }]}>
           <Ionicons name={cat.icon} size={60} color={cat.color} />

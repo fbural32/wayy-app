@@ -288,6 +288,8 @@ const styles = StyleSheet.create({
   visitedCat: { fontSize: 11, fontWeight: '600' },
   emptyVisited: { alignItems: 'center', paddingTop: 40 },
   emptyTxt: { fontSize: 15, color: COLORS.muted, marginTop: 12 },
+  proBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginHorizontal: 14, paddingVertical: 14, borderRadius: 14, borderWidth: 1.5, borderColor: COLORS.star, marginBottom: 10, marginTop: 8, backgroundColor: '#FFFBEA' },
+  proBtnTxt: { color: '#B7860B', fontWeight: '800', fontSize: 15 },
   organizerBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginHorizontal: 14, paddingVertical: 14, borderRadius: 14, borderWidth: 1.5, borderColor: COLORS.secondary, marginBottom: 10, marginTop: 8 },
   organizerTxt: { color: COLORS.secondary, fontWeight: "700", fontSize: 15 },
   logoutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginHorizontal: 14, paddingVertical: 14, borderRadius: 14, borderWidth: 1.5, borderColor: COLORS.primary, marginBottom: 12, marginTop: 8 },

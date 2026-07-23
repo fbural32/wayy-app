@@ -36,6 +36,9 @@ export function AuthProvider({ children }) {
       categoryScores: {},
       badges: [],
       createdAt: new Date().toISOString(),
+      agreementAccepted: true,
+      agreementAcceptedAt: new Date().toISOString(),
+      agreementVersion: '1.0',
       banned: false,
     };
     await setDoc(doc(db, 'users', cred.user.uid), profileData);

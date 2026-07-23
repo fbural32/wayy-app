@@ -1,11 +1,10 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Animated, Dimensions, TouchableWithoutFeedback, ScrollView } from 'react-native';
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, Callout, UrlTile } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserLocation } from '../context/LocationContext';
 import { PLACES } from '../data/places';
 import { fetchNearbyPlaces } from '../utils/osmService';
-import { fetchNearbyEvents } from '../utils/eventbriteService';
 import { fetchTicketmasterEvents } from '../utils/ticketmasterService';
 import { CATEGORIES, COLORS, TRAVEL_MODES, CATEGORY_ORDER } from '../config/theme';
 import { getDistanceKm, formatDistance } from '../utils/distance';
@@ -60,15 +59,8 @@ export default function MapScreen({ navigation }) {
     setLoadingOSM(false);
 
     setLoadingEvents(true);
-    const [evs, tmEvs] = await Promise.all([
-      fetchNearbyEvents(lat, lon, 30),
-      fetchTicketmasterEvents(lat, lon, 50),
-    ]);
-    // Duplicate isimleri temizle
-    const allEvs = [...evs, ...tmEvs].filter((e, i, arr) =>
-      arr.findIndex(x => x.name.toLowerCase() === e.name.toLowerCase()) === i
-    );
-    setEvents(allEvs);
+    const tmEvs = await fetchTicketmasterEvents(lat, lon, 50);
+    setEvents(tmEvs);
     setLoadingEvents(false);
   }
 
@@ -161,11 +153,17 @@ export default function MapScreen({ navigation }) {
       <MapView
         ref={mapRef}
         style={styles.map}
-        provider={PROVIDER_GOOGLE}
         initialRegion={{ latitude: location.latitude, longitude: location.longitude, latitudeDelta: 0.3, longitudeDelta: 0.3 }}
         showsUserLocation
         showsMyLocationButton={false}
       >
+        <UrlTile
+          urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maximumZ={18}
+          flipY={false}
+          tileSize={256}
+          shouldReplaceMapContent={true}
+        />
         {visiblePlaces.map(place => {
           const cat = CATEGORIES[place.category];
           if (!cat) return null;

@@ -5,14 +5,13 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "splash": {
-      "backgroundColor": "#1D3557"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "d230c47b-7b3a-4fba-911b-7a779074592a"
-      }
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#00B4D8"
     },
     "ios": {
       "supportsTablet": false,
@@ -22,28 +21,53 @@
         "NSLocationWhenInUseUsageDescription": "Yakınındaki tarihi yerleri, müzeleri ve restoranları göstermek için konumunu kullanır.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Yolculuğun sırasında yakın yerleri takip etmek için arka planda konumunu kullanır.",
         "NSLocationAlwaysUsageDescription": "Uygulama kapalıyken bile yakın yerleri bildirmek için konumunu kullanır.",
-        "UIBackgroundModes": ["location", "fetch"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      },
+      "icon": "./assets/icon.png",
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#00B4D8"
       }
     },
     "android": {
       "package": "com.fbural.yolarkadasim",
       "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#1D3557"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#ffffff"
       },
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_BACKGROUND_LOCATION",
-        "RECEIVE_BOOT_COMPLETED",
         "VIBRATE"
-      ]
+      ],
+      "icon": "./assets/icon.png",
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#00B4D8"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "BURAYA_EAS_PROJECT_ID"
+      }
     },
     "plugins": [
       "expo-notifications",
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Wayy! yakın yerleri takip etmek için konumunu kullanır.",
-          "locationAlwaysPermission": "Wayy! uygulama kapalıyken yakın yerleri bildirmek için konumunu kullanır.",
           "locationWhenInUsePermission": "Wayy! yakınındaki yerleri göstermek için konumunu kullanır.",
+          "isIosBackgroundLocationEnabled": false,
+          "isAndroidBackgroundLocationEnabled": false
+        }
+      ]
+    ],
+    "icon": "./assets/icon.png"
+  }
+}

@@ -6,15 +6,48 @@ import { useUserLocation } from '../context/LocationContext';
 import { PLACES } from '../data/places';
 import { COLORS, CATEGORIES, CATEGORY_ORDER, RADIUS_OPTIONS, TRAVEL_MODES } from '../config/theme';
 import { getDistanceKm, estimateMinutes, formatDistance, formatDuration } from '../utils/distance';
+import { getPexelsPhoto } from '../utils/pexelsService';
+import { getWikiPhoto } from '../utils/wikiPhotoService';
+import BannerAd from '../components/BannerAd';
+
+const FALLBACK_IMAGES = {
+  restoran: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=640&q=80',
+  muze: 'https://images.unsplash.com/photo-1544967919-44c1ef2f9e4a?w=640&q=80',
+  tarihi: 'https://images.unsplash.com/photo-1563804447971-6e113ab80713?w=640&q=80',
+  unlu_kisi: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=640&q=80',
+  doga: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=640&q=80',
+  etkinlik: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=640&q=80',
+};
 
 const { width } = Dimensions.get('window');
 const SIDEBAR_WIDTH = 240;
 
 function PlaceCard({ place, distanceKm, durationMin, isFavorite, onPress, onToggleFavorite, travelMode }) {
   const cat = CATEGORIES[place.category];
+  const [imgUri, setImgUri] = React.useState(FALLBACK_IMAGES[place.category]);
+
+  React.useEffect(() => {
+    // Önce Wikipedia'dan yere özel fotoğraf dene
+    getWikiPhoto(place.name, place.city).then(wikiUrl => {
+      if (wikiUrl) {
+        setImgUri(wikiUrl);
+      } else {
+        // Wikipedia'da yoksa Pexels'ten kategori fotoğrafı al
+        getPexelsPhoto(place.category, place.name).then(url => {
+          if (url) setImgUri(url);
+        });
+      }
+    });
+  }, [place.id]);
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
-      <Image source={{ uri: place.image }} style={styles.cardImage} resizeMode="cover" />
+      <Image 
+        source={{ uri: imgUri }} 
+        style={styles.cardImage} 
+        resizeMode="cover"
+        onError={() => setImgUri(FALLBACK_IMAGES[place.category])}
+      />
       <View style={styles.cardContent}>
         <View style={styles.cardTop}>
           <View style={[styles.catBadge, { backgroundColor: cat.color }]}>
