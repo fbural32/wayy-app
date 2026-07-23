@@ -73,7 +73,6 @@ export default function AuthScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-      <Text style={styles.logo}>🗺️</Text>
       <Text style={styles.title}>{t.appName}</Text>
       <Text style={styles.subtitle}>{t.poweredBy}</Text>
 
