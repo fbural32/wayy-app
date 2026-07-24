@@ -12,15 +12,12 @@ workflows:
         script: npx expo prebuild --platform android --clean
       - name: Build AAB
         script: |
-          # Fix Kotlin version
-          python3 -c "
-          content = open('android/build.gradle').read()
-          print('Current kotlin:', [l for l in content.split('\n') if 'kotlin' in l.lower()])
-          content = content.replace('1.9.25', '2.1.0')
-          open('android/build.gradle', 'w').write(content)
-          content2 = open('android/build.gradle').read()
-          print('Fixed kotlin:', [l for l in content2.split('\n') if 'kotlin' in l.lower()])
-          "
+          # Fix Kotlin version before build
+          sed -i "s/kotlinVersion = \"1.9.25\"/kotlinVersion = \"2.1.0\"/g" android/build.gradle
+          sed -i "s/kotlinVersion = '1.9.25'/kotlinVersion = '2.1.0'/g" android/build.gradle
+          echo "Kotlin version in build.gradle:"
+          grep -n "kotlin" android/build.gradle || echo "not found"
+          
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease
