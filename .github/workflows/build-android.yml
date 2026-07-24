@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
+    env:
+      KOTLIN_VERSION: "2.1.0"
+    
     steps:
       - uses: actions/checkout@v4
       
@@ -29,18 +32,22 @@ jobs:
       - name: Prebuild Android
         run: npx expo prebuild --platform android --clean
         
-      - name: Fix Kotlin version in build.gradle
+      - name: Show build.gradle
+        run: cat android/build.gradle
+        
+      - name: Fix Kotlin version
         run: |
-          echo "=== Before fix ==="
-          grep -n "kotlin" android/build.gradle || true
-          python3 -c "
-          content = open('android/build.gradle').read()
-          content = content.replace('1.9.25', '2.1.0')
-          open('android/build.gradle', 'w').write(content)
-          print('Fixed!')
-          "
-          echo "=== After fix ==="
-          grep -n "kotlin" android/build.gradle || true
+          python3 << 'PYEOF'
+          import re
+          with open('android/build.gradle', 'r') as f:
+              content = f.read()
+          print("Before:", re.findall(r'kotlin[Vv]ersion.*', content))
+          content = re.sub(r'kotlinVersion\s*=\s*["\'][\d.]+["\']', 'kotlinVersion = "2.1.0"', content)
+          content = re.sub(r'ext\.kotlinVersion\s*=\s*["\'][\d.]+["\']', 'ext.kotlinVersion = "2.1.0"', content)
+          with open('android/build.gradle', 'w') as f:
+              f.write(content)
+          print("After:", re.findall(r'kotlin[Vv]ersion.*', content))
+          PYEOF
           
       - name: Build AAB
         run: |
@@ -48,7 +55,7 @@ jobs:
           chmod +x gradlew
           ./gradlew bundleRelease
           
-      - name: Find AAB
+      - name: Find and Upload AAB
         run: find . -name "*.aab" -type f
           
       - name: Upload AAB
