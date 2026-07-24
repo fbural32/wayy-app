@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, ActivityIndicator, Image } from 'react-native';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
@@ -73,6 +73,7 @@ export default function AuthScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <Image source={require('../../assets/icon.png')} style={styles.logo} resizeMode="contain" />
       <Text style={styles.title}>{t.appName}</Text>
       <Text style={styles.subtitle}>{t.poweredBy}</Text>
 
@@ -114,7 +115,7 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
   content: { padding: 24, paddingTop: 70 },
-  logo: { fontSize: 64, textAlign: 'center' },
+  logo: { width: 120, height: 120, alignSelf: 'center', marginBottom: 8 },
   title: { fontSize: 36, fontWeight: '900', color: COLORS.secondary, textAlign: 'center', marginTop: 8 },
   subtitle: { fontSize: 12, color: COLORS.muted, textAlign: 'center', marginBottom: 36 },
   forgotDesc: { fontSize: 14, color: COLORS.muted, textAlign: 'center', marginBottom: 24, lineHeight: 20 },

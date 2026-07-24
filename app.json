@@ -4,33 +4,29 @@
     "slug": "wayy",
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#00B4D8"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d230c47b-7b3a-4fba-911b-7a779074592a"
+      }
     },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.fbural.yolarkadasim",
       "buildNumber": "1",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Yakınındaki tarihi yerleri, müzeleri ve restoranları göstermek için konumunu kullanır.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Yolculuğun sırasında yakın yerleri takip etmek için arka planda konumunu kullanır.",
-        "NSLocationAlwaysUsageDescription": "Uygulama kapalıyken bile yakın yerleri bildirmek için konumunu kullanır.",
+        "NSLocationWhenInUseUsageDescription": "Wayy! uses your location to show nearby places.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Wayy! uses your location to track nearby places.",
+        "NSLocationAlwaysUsageDescription": "Wayy! uses your location to send notifications.",
         "UIBackgroundModes": [
-          "location",
           "fetch"
         ]
-      },
-      "icon": "./assets/icon.png",
-      "splash": {
-        "image": "./assets/splash-icon.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#00B4D8"
       }
     },
     "android": {
@@ -43,31 +39,26 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "RECEIVE_BOOT_COMPLETED",
         "VIBRATE"
-      ],
-      "icon": "./assets/icon.png",
-      "splash": {
-        "image": "./assets/splash-icon.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#00B4D8"
-      }
-    },
-    "extra": {
-      "eas": {
-        "projectId": "d230c47b-7b3a-4fba-911b-7a779074592a"
-      }
+      ]
     },
     "plugins": [
       "expo-notifications",
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Wayy! yakınındaki yerleri göstermek için konumunu kullanır.",
-          "isIosBackgroundLocationEnabled": false,
-          "isAndroidBackgroundLocationEnabled": false
+          "locationWhenInUsePermission": "Wayy! uses your location to show nearby places.",
+          "locationAlwaysAndWhenInUsePermission": "Wayy! uses your location to track nearby places in background.",
+          "locationAlwaysPermission": "Wayy! uses your location to send notifications when closed.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
         }
       ]
     ],
-    "icon": "./assets/icon.png"
+    "assetBundlePatterns": [
+      "**/*"
+    ]
   }
 }
